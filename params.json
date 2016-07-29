@@ -1,6 +1,6 @@
 {
   "name": "Schemify.Kt",
   "tagline": "schemification and serialization api",
-  "body": "# APIs:\r\n* [Schemification API](# schemification-api): Creating a scheme of a class.\r\n* Serialization API: Transforming an instance of schemified class from / to other format.\r\n\r\n## Schemification API:\r\nStructure of a class can be represented as a scheme by mapping class fields to scheme Props. I.e. scheme here is representation of class state as set of props.\r\n_Example:_\r\n\r\n",
+  "body": "# APIs:\r\n* [Schemification API](#schemification-api): Creating a scheme of a class.\r\n* Serialization API: Transforming an instance of schemified class from / to other format.\r\n\r\n## Schemification API:\r\nStructure of a class can be represented as a scheme by mapping class fields to scheme Props. I.e. scheme here is representation of class state as set of props.\r\n_Example:_\r\n\r\n",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
