@@ -1,6 +1,6 @@
 {
   "name": "Schemify.Kt",
   "tagline": "Schemification and serialization API for Kotlin",
-  "body": "# APIs:\r\n* [**Schemification API**](#schemification-api): Creating a scheme of a class.\r\n* Serialization API: Transforming an instance of schemified class from / to other format.\r\n\r\n## Schemification API:\r\nStructure of a class can be represented as a scheme by mapping class fields to scheme Props. I.e. scheme here is representation of class state as set of props.\r\n_Example:_\r\n![evo1](https://cloud.githubusercontent.com/assets/5307477/17239649/7207e13a-556e-11e6-9c7f-766be04383bb.png)\r\n[1.pdf](https://github.com/just-4-fun/SchemifyKt/files/389982/1.pdf)",
+  "body": "# Sub APIs:\r\n* [**Schemification API**](#schemification-api): Creating a scheme of a class.\r\n* [**Serialization API**](#serialization-api): Transforming an instance of schemified class from / to other format.\r\n\r\n***\r\n\r\n## Schemification API\r\nStructure of a class can be represented as a scheme by mapping class fields to scheme Props.  \r\n_In this sense scheme is a special class that represent other class structure as set of props._  \r\n_Example:_\r\n\r\n\r\n***\r\n\r\n## Serialization API\r\n**Container** of **entries** represented in one **format** can be transformed to another format.  \r\n_Examples:_\r\n\r\n",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
