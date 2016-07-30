@@ -45,7 +45,7 @@
 
 <ul>
 <li>
-<strong>serialization</strong>:
+<a href="#scheme-serialization"><strong>serialization</strong></a>:
 
 <ul>
 <li>instance of that class can be read from other formats</li>
@@ -53,7 +53,7 @@
 </ul>
 </li>
 <li>
-<strong>props manipulation</strong>: 
+<a href="#prop-manipulation"><strong>props manipulation</strong></a>: 
 
 <ul>
 <li>instance of that class can be assigned with values via props. </li>
@@ -61,7 +61,7 @@
 </ul>
 </li>
 <li>
-<strong>extended methods</strong> on instance of that class such as equal, copy, toString, hashCode</li>
+<a href="#extended-methods"><strong>extended methods</strong></a> on instance of that class such as equal, copy, toString, hashCode</li>
 </ul>
 
 <h3>
@@ -201,8 +201,76 @@ API also can not distinguish whether the constructor argument is class field or 
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17269308/7da7c340-564d-11e6-8a19-61addebfc88e.png" alt="smf_constructor"></p>
 </blockquote>
 </li>
-<li><p>If a prop doesn’t have the related field in schemified class accessing it will just return null value.<br>
-To explicitly declare a prop that doesn’t have the related field it should be created via PROP_STUB() method which returns prop of type Prop. It’s useful when using compact representation and zero evolution scheme (see next).</p></li>
+</ul>
+
+<h3>
+<a id="scheme-serialization" class="anchor" href="#scheme-serialization" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scheme serialization</h3>
+
+<p>An instance of schemified class can be transformed to / from another format via Serialization API by means of its scheme.<br>
+Scheme <code>read</code> method can be called to produce new schemified instance from formatted object.<br>
+Scheme <code>write</code> method can be called to produce formatted object from schemified instance.  </p>
+
+<p>The formatted object can be represented in:</p>
+
+<ul>
+<li>general form (as sequence of named entries)</li>
+<li>compact form (as sequence of non-named entries or which is simply an array of values).<br>
+</li>
+</ul>
+
+<p>Default representation is controlled by scheme <code>compact</code> property. Optional <code>compact</code> argument of write method can overwrite that property.  </p>
+
+<blockquote>
+<div class="highlight highlight-source-scala"><pre><span class="pl-k">val</span> <span class="pl-en">sabretooth</span> <span class="pl-k">=</span> <span class="pl-en">XMan</span>()
+<span class="pl-k">val</span> <span class="pl-en">generalJson</span> <span class="pl-k">=</span> <span class="pl-en">XSchema</span>.write(sabretooth, <span class="pl-en">JsonFactory</span>) <span class="pl-c">// {“id”:3,“firstname”:”sabretooth”,,,,}</span>
+<span class="pl-k">val</span> <span class="pl-en">compactJson</span> <span class="pl-k">=</span> <span class="pl-en">XSchema</span>.write(sabretooth, <span class="pl-en">JsonFactory</span>, compact<span class="pl-k">=</span><span class="pl-c1">true</span>) <span class="pl-c">// [3,”sabretooth”,,,,]</span>
+<span class="pl-k">val</span> <span class="pl-en">sabreCopy</span> <span class="pl-k">=</span> <span class="pl-en">XSchema</span>.read(generalJson, <span class="pl-en">JsonFactory</span>)</pre></div>
+</blockquote>
+
+<p>Benefit of compact form is its compact representation.   </p>
+
+<blockquote>
+<p><em>Representation example based on Json implementation:</em><br>
+<img src="https://cloud.githubusercontent.com/assets/5307477/17270002/7669aa86-5660-11e6-928b-2e669bb95452.png" alt="smf_compact_vs_general"></p>
+</blockquote>
+
+<p>One more advantage of compact form is zero scheme evolution.<br>
+I.e. none of changes to the schemified class (field addition / change / removal) affects transformation of schemified class instance from older schema version to new one and vice versa if props indexes stays intact.<br>
+As long as prop index corresponds to its declaration position within the schema, props neither should be removed nor their declaration positions should be changed. </p>
+
+<ul>
+<li>
+<p>Changing field name or type:<br>
+In case of renaming a field its corresponding prop should also be renamed. In case of changing type of a field its corresponding prop’s type should also be changed accordingly. As the representation does not include prop names, changing field name has no effect to transformation. Since API provides basic types casting (// TODO specify which ones), changing field type is compensated by value auto casting in most cases.  </p>
+
+<blockquote>
+<p><img src="https://cloud.githubusercontent.com/assets/5307477/17270017/f693e44c-5660-11e6-8f47-c0eb769e2ba8.png" alt="smf_evo_change"></p>
+</blockquote>
+</li>
+<li>
+<p>Field addition:<br>
+In case of addition a new field the corresponding prop should be just declared after all other props. Adding a field just appends a value to the top a sequence of values. Reading an object written by scheme with older version by scheme with newer version will just assign a default value to the extra field. Reading an object written by newer version of schema with older version will ignore absent value.  </p>
+
+<blockquote>
+<p><img src="https://cloud.githubusercontent.com/assets/5307477/17270018/f8a1e6e4-5660-11e6-9068-f97b178efcd0.png" alt="smf_evo_add"></p>
+</blockquote>
+</li>
+<li>
+<p>Field removal:<br>
+In case of removing a field its corresponding prop should be left and just change its type to Prop which is returned by calling PROP_STUB() construction method. Removing a field creates a “hole” in the schema that is just a change of a type of corresponding prop to Prop.   </p>
+
+<blockquote>
+<p><img src="https://cloud.githubusercontent.com/assets/5307477/17270020/fa73fd4a-5660-11e6-8dae-5b07f2e404f5.png" alt="smf_evo_remove"></p>
+</blockquote>
+</li>
+</ul>
+
+<h3>
+<a id="prop-manipulation" class="anchor" href="#prop-manipulation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prop manipulation</h3>
+
+<ul>
+<li>If a prop doesn’t have the related field in schemified class accessing it will just return null value.<br>
+To explicitly declare a prop that doesn’t have the related field it should be created via PROP_STUB() method which returns prop of type Prop. It’s useful when using compact representation and zero evolution scheme (see next).</li>
 </ul>
 
 <hr>
