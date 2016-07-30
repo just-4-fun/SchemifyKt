@@ -1,42 +1,25 @@
-<!doctype html>
-<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
-<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on https://github.com/jonrohan -->
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Schemify.Kt by just-4-fun</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Schemify.Kt</h1>
+      <h2 class="project-tagline">Schemification and serialization API for Kotlin</h2>
+      <a href="https://github.com/just-4-fun/SchemifyKt" class="btn">View on GitHub</a>
+      <a href="https://github.com/just-4-fun/SchemifyKt/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/just-4-fun/SchemifyKt/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
-  <link rel="stylesheet" href="stylesheets/github-dark.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script type="text/javascript" src="javascripts/script.js"></script>
-
-  <title>Schemify.Kt</title>
-  <meta name="description" content="Schemification and serialization API for Kotlin">
-
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
-</head>
-
-<body>
-
-  <div class="wrapper">
-    <header>
-      <h1 class="title">Schemify.Kt</h1>
-    </header>
-    <div id="container">
-      <p class="tagline">Schemification and serialization API for Kotlin</p>
-      <div id="main" role="main">
-        <div class="download-bar">
-        <div class="inner">
-          <a href="https://github.com/just-4-fun/SchemifyKt/tarball/master" class="download-button tar"><span>Download</span></a>
-          <a href="https://github.com/just-4-fun/SchemifyKt/zipball/master" class="download-button zip"><span>Download</span></a>
-          <a href="https://github.com/just-4-fun/SchemifyKt" class="code">View Schemify.Kt on GitHub</a>
-        </div>
-        <span class="blc"></span><span class="trc"></span>
-        </div>
-        <article class="markdown-body">
-          <h1>
+    <section class="main-content">
+      <h1>
 <a id="apis" class="anchor" href="#apis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>APIs:</h1>
 
 <ul>
@@ -62,27 +45,44 @@
 
 <p><strong>Container</strong> of <strong>entries</strong> represented in one <strong>format</strong> can be transformed to another format.<br>
 <em>Examples:</em>
-<img src="https://cloud.githubusercontent.com/assets/5307477/17248063/66767200-55a0-11e6-9c31-d73fd3eaa58e.png" alt="evo1"></p>
-        </article>
-      </div>
-    </div>
-    <footer>
-      <div class="owner">
-      <p><a href="https://github.com/just-4-fun" class="avatar"><img src="https://avatars3.githubusercontent.com/u/5307477?v=3&amp;s=60" width="48" height="48"></a> <a href="https://github.com/just-4-fun">just-4-fun</a> maintains <a href="https://github.com/just-4-fun/SchemifyKt">Schemify.Kt</a></p>
+<img src="https://cloud.githubusercontent.com/assets/5307477/17268380/84b1451a-5631-11e6-95a9-aceacb1fe1ca.png" alt="ser_examples">
+<strong>Container</strong> of type OUT is created by calling <em>Produce(reader: Reader, writer: Writer)</em>.
+Reader extracts entries from a container of type IN. Those are passed to Writer which writes them to the container of type OUT.<br>
+There are default implementations of Reader and Writer for Json, Xml and Scheme format. For convenience there are also factory singletons for creating their instances.<br>
+<em>Examples:</em></p>
 
+<div class="highlight highlight-source-scala"><pre><span class="pl-k">val</span> <span class="pl-en">orderJson</span> <span class="pl-k">=</span> <span class="pl-en">Produce</span>(<span class="pl-en">SchemeReader</span>(order1, <span class="pl-en">OrderScheme</span>), <span class="pl-en">JsonFactory</span>())
+<span class="pl-k">val</span> <span class="pl-en">order2</span> <span class="pl-k">=</span> <span class="pl-en">Produce</span>(<span class="pl-en">JsonFactory</span>(orderJson), <span class="pl-en">SchemeWriter</span>(<span class="pl-en">OrderScheme</span>))</pre></div>
 
-      </div>
-      <div class="creds">
-        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
-      </div>
-    </footer>
-  </div>
-  <div class="current-section">
-    <a href="#top">Scroll to top</a>
-    <a href="https://github.com/just-4-fun/SchemifyKt/tarball/master" class="tar">tar</a><a href="https://github.com/just-4-fun/SchemifyKt/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
-    <p class="name"></p>
-  </div>
+<p>Entry is a holder of some data. Entry can be named (holding name-value pair) or non-named (holding just value).<br>
+Container representation should conform the structure:</p>
+
+<p><img src="https://cloud.githubusercontent.com/assets/5307477/17268685/76de9650-563a-11e6-91e4-6aeb7ac79034.png" alt="ser_flow"></p>
+
+<p>Specific symbols for concrete records, their delimiters and way of encoding named-entry are up to Reader and Writer implementation.<br>
+Atomic value is a data of following base types: String, ByteArray and all the java primitive types.</p>
+
+<p>To implement custom Reader class Reader should be extended. And the following methods should be implemented:</p>
+
+<div class="highlight highlight-source-scala"><pre><span class="pl-k">def</span> <span class="pl-en">readRootEntry</span>(<span class="pl-v">entryBuilder</span>: <span class="pl-en">EntryBuilder</span>)<span class="pl-k">:</span> <span class="pl-en">Entry</span>
+<span class="pl-k">def</span> <span class="pl-en">readNextEntry</span>(<span class="pl-v">entryBuilder</span>: <span class="pl-en">EntryBuilder</span>, <span class="pl-v">contextIsSequence</span>: <span class="pl-k">Boolean</span>)<span class="pl-k">:</span> <span class="pl-en">Entry</span></pre></div>
+
+<p>To implement custom Writer class Writer should be extended. And the following methods should be implemented:</p>
+
+<div class="highlight highlight-source-scala"><pre><span class="pl-k">def</span> <span class="pl-en">result</span>()<span class="pl-k">:</span> <span class="pl-en">T</span><span class="pl-k">?</span>
+<span class="pl-k">def</span> <span class="pl-en">writeRootEntry</span>(<span class="pl-v">isSequence</span>: <span class="pl-k">Boolean</span>, <span class="pl-v">content</span>: <span class="pl-en">EnclosingEntries</span>)<span class="pl-k">:</span> <span class="pl-k">Unit</span>
+<span class="pl-k">def</span> <span class="pl-en">writeObjectEntry</span>(<span class="pl-v">name</span>: <span class="pl-k">String</span><span class="pl-k">?</span>, <span class="pl-v">index</span>: <span class="pl-k">Int</span>, <span class="pl-v">content</span>: <span class="pl-en">EnclosingEntries</span>)<span class="pl-k">:</span> <span class="pl-k">Unit</span>
+<span class="pl-k">def</span> <span class="pl-en">writeSequenceEntry</span>(<span class="pl-v">name</span>: <span class="pl-k">String</span><span class="pl-k">?</span>, <span class="pl-v">index</span>: <span class="pl-k">Int</span>, <span class="pl-v">content</span>: <span class="pl-en">EnclosingEntries</span>)<span class="pl-k">:</span> <span class="pl-k">Unit</span>
+<span class="pl-k">def</span> <span class="pl-en">writeAtomicEntry</span>(<span class="pl-v">value</span>: [all atomic types], <span class="pl-v">name</span>: <span class="pl-k">String</span><span class="pl-k">?</span>, <span class="pl-v">index</span>: <span class="pl-k">Int</span>)<span class="pl-k">:</span> <span class="pl-k">Unit</span></pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/just-4-fun/SchemifyKt">Schemify.Kt</a> is maintained by <a href="https://github.com/just-4-fun">just-4-fun</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
 
   
-</body>
+  </body>
 </html>
