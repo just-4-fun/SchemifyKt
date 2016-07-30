@@ -150,7 +150,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 			else -> PropType.evalError(v, this)
 		}
 		
-		override fun readEntry(v: Long, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
+		override fun readEntry(v: Long, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
 	}
 	
 	object INT : PropType<Int>(Int::class) {
@@ -166,7 +166,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 			else -> PropType.evalError(v, this)
 		}
 		
-		override fun readEntry(v: Int, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
+		override fun readEntry(v: Int, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
 	}
 	
 	object SHORT : PropType<Short>(Short::class) {
@@ -182,7 +182,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 			else -> PropType.evalError(v, this)
 		}
 		
-		override fun readEntry(v: Short, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
+		override fun readEntry(v: Short, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
 	}
 	
 	object BYTE : PropType<Byte>(Byte::class) {
@@ -198,7 +198,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 			else -> PropType.evalError(v, this)
 		}
 		
-		override fun readEntry(v: Byte, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
+		override fun readEntry(v: Byte, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
 	}
 	
 	object DOUBLE : PropType<Double>(Double::class) {
@@ -214,7 +214,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 			else -> PropType.evalError(v, this)
 		}
 		
-		override fun readEntry(v: Double, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
+		override fun readEntry(v: Double, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
 	}
 	
 	object FLOAT : PropType<Float>(Float::class) {
@@ -230,7 +230,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 			else -> PropType.evalError(v, this)
 		}
 		
-		override fun readEntry(v: Float, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
+		override fun readEntry(v: Float, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
 	}
 	
 	object CHAR : PropType<Char>(Char::class) {
@@ -254,7 +254,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 			else -> PropType.evalError(v, this)
 		}
 		
-		override fun readEntry(v: Char, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
+		override fun readEntry(v: Char, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
 	}
 	
 	object BOOLEAN : PropType<Boolean>(Boolean::class) {
@@ -272,7 +272,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 			else -> PropType.evalError(v, this)
 		}
 		
-		override fun readEntry(v: Boolean, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
+		override fun readEntry(v: Boolean, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
 	}
 	
 	object STRING : PropType<String>(String::class) {
@@ -287,7 +287,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 			else -> PropType.evalError(v, this)
 		}
 		
-		override fun readEntry(v: String, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
+		override fun readEntry(v: String, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
 	}
 	
 	//todo reasoning for that Unit values
@@ -298,7 +298,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 		override fun copy(v: Unit?, deep: Boolean): Unit? = Unit
 		override fun equal(v1: Unit?, v2: Unit?): Boolean = true
 		override fun isInstance(v: Any): Boolean = v == Unit
-		override fun readEntry(v: Unit, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry = entryBuilder.AtomicNullEntry(name)
+		override fun readEntry(v: Unit, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry = entryBuilder.AtomicNullEntry(name)
 	}
 	
 	
@@ -312,8 +312,8 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 		override fun copy(v: T?, deep: Boolean): T? = if (!deep || v == null) v else valueType.copy(toValue(v), true)?.let { fromValue(it) }
 		override fun equal(v1: T?, v2: T?): Boolean = v1 === v2 || (v1 != null && v2 != null && valueType.equal(toValue(v1), toValue(v2)))
 		override fun hash(v: T): Int = toValue(v)?.let { valueType.hash(it) } ?: 0
-		override fun readEntry(v: T, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry {
-			return toValue(v)?.let { valueType.readEntry(it, name, entryBuilder, asSequence) } ?: entryBuilder.AtomicNullEntry(name)
+		override fun readEntry(v: T, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry {
+			return toValue(v)?.let { valueType.readEntry(it, name, entryBuilder, compact) } ?: entryBuilder.AtomicNullEntry(name)
 		}
 	}
 	
@@ -343,7 +343,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 		fun onComplete(seq: T, expectedSize: Int): T = seq
 		fun buffSize() = 100
 		override fun sequenceWriter(): Writer<T>? = SequenceWriter(this)
-		override fun readEntry(v: T, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry {
+		override fun readEntry(v: T, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry {
 			return entryBuilder.SequenceEntry(name, SequenceReader(v, this))
 		}
 	}
@@ -530,7 +530,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 		override fun copy(v: ByteArray, expectSize: Int): ByteArray = Arrays.copyOf(v, expectSize)
 		override fun equal(v1: ByteArray?, v2: ByteArray?): Boolean = Arrays.equals(v1, v2)
 		override fun hash(v: ByteArray): Int = Arrays.hashCode(v)
-		override fun readEntry(v: ByteArray, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
+		override fun readEntry(v: ByteArray, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry = entryBuilder.AtomicEntry(v, name)
 	}
 	
 	
@@ -698,7 +698,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 		}
 		
 		override fun sequenceWriter() = RawCollectionWriter()
-		override fun readEntry(v: Collection<Any?>, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry {
+		override fun readEntry(v: Collection<Any?>, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry {
 			return entryBuilder.SequenceEntry(name, RawCollectionReader(v))
 		}
 	}
@@ -756,7 +756,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 		}
 		
 		override fun sequenceWriter() = RawArrayWriter()
-		override fun readEntry(v: Array<Any?>, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry {
+		override fun readEntry(v: Array<Any?>, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry {
 			return entryBuilder.SequenceEntry(name, RawArrayReader(v))
 		}
 	}
@@ -800,7 +800,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 		}
 		
 		override fun objectWriter() = RawMapWriter()
-		override fun readEntry(v: MutableMap<String, Any?>, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry {
+		override fun readEntry(v: MutableMap<String, Any?>, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry {
 			return entryBuilder.ObjectEntry(name, RawMapReader(v))
 		}
 	}
@@ -811,7 +811,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 	// todo impl eval to convert from sub/super classes
 // todo asInstance convert string to object by DefaultProducer
 	abstract class SCHEMAof<T : Any>(typeKClass: KClass<T>) : PropType<T>(typeKClass), TypeProducer<T> {
-		var writeAsSequence = true
+		var compact = true
 		var propSize: Int = 0
 			internal set(value) = run { field = value }
 		val props: List<Prop<Any>> by lazy { init(); pps }
@@ -848,7 +848,7 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 		fun PROP_Floats(hasNoAccessors: Boolean = false, writeProtected: Boolean? = null): Prop<FloatArray> = PROP_of(FLOATS, hasNoAccessors, writeProtected)
 		fun PROP_Booleans(hasNoAccessors: Boolean = false, writeProtected: Boolean? = null): Prop<BooleanArray> = PROP_of(BOOLEANS, hasNoAccessors, writeProtected)
 		fun PROP_Map(hasNoAccessors: Boolean = false, writeProtected: Boolean? = null): Prop<MutableMap<String, Any?>> = PROP_of(MAP, hasNoAccessors, writeProtected)
-		fun PROP_Collection(hasNoAccessors: Boolean = false, writeProtected: Boolean? = null): Prop<Collection<*>> = PROP_of(COLLECTION, hasNoAccessors, writeProtected)
+		fun PROP_Collection(hasNoAccessors: Boolean = false, writeProtected: Boolean? = null): Prop<Collection<Any?>> = PROP_of(COLLECTION, hasNoAccessors, writeProtected)
 		fun PROP_Array(hasNoAccessors: Boolean = false, writeProtected: Boolean? = null): Prop<Array<Any?>> = PROP_of(ARRAY, hasNoAccessors, writeProtected)
 		fun <E : Any> PROP_ArrayOf(elementType: PropType<E>, hasNoAccessors: Boolean = false, writeProtected: Boolean? = null): Prop<Array<E>> = PROP_of(ARRAYof(elementType), hasNoAccessors, writeProtected)
 		fun <E : Any> PROP_ListOf(elementType: PropType<E>, hasNoAccessors: Boolean = false, writeProtected: Boolean? = null): Prop<List<E>> = PROP_of(LISTof(elementType), hasNoAccessors, writeProtected)
@@ -868,9 +868,9 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 		open protected fun onPropCreated(p: Prop<*>) = Unit
 		open protected fun onObjectProduced(obj: T) = Unit
 		
-		override fun <D : Any> read(input: D, factory: ReaderFactory<D>): T? = Produce(factory(input), ObjectWriter(this))
-		override fun <D : Any> write(input: T, factory: WriterFactory<D>): D? = Produce(ObjectReader(input, this), factory())
-		fun <D : Any> write(input: T, factory: WriterFactory<D>, asSequence: Boolean): D? = Produce(ObjectReader(input, this, asSequence), factory())
+		override fun <D : Any> read(input: D, factory: ReaderFactory<D>): T? = Produce(factory(input), SchemeWriter(this))
+		override fun <D : Any> write(input: T, factory: WriterFactory<D>): D? = Produce(SchemeReader(input, this), factory())
+		fun <D : Any> write(input: T, factory: WriterFactory<D>, compact: Boolean): D? = Produce(SchemeReader(input, this, compact), factory())
 		
 		/* internal */
 		
@@ -931,11 +931,11 @@ sealed class PropType<T : Any>(override val typeKClass: KClass<T>) : iPropType<T
 			return obj
 		}
 		
-		override fun objectWriter(): Writer<T>? = ObjectWriter(this)
-		override fun sequenceWriter(): Writer<T>? = ObjectWriter(this)
-		override fun readEntry(v: T, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry {
-			val reader = ObjectReader(v, this)
-			return if (asSequence ?: writeAsSequence) entryBuilder.SequenceEntry(name, reader)
+		override fun objectWriter(): Writer<T>? = SchemeWriter(this)
+		override fun sequenceWriter(): Writer<T>? = SchemeWriter(this)
+		override fun readEntry(v: T, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry {
+			val reader = SchemeReader(v, this)
+			return if (compact ?: this.compact) entryBuilder.SequenceEntry(name, reader)
 			else entryBuilder.ObjectEntry(name, reader)
 		}
 		

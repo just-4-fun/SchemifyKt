@@ -26,7 +26,7 @@ class TestBasics : Spek() { init {
 			private var p6: Int = 0
 			val pStub: Unit = Unit
 		}
-
+		
 		class ObjSchema : SCHEMAof<Obj>(Obj::class) {
 			val p0 = PROP_of(INT)
 			val p1 by PROP_of(INT)
@@ -40,19 +40,19 @@ class TestBasics : Spek() { init {
 			val pStub by PROP_STUB()
 			val pLost by PROP_of(INT)
 		}
-
+		
 		val schema = ObjSchema()
 		val obj = Obj()
-
+		
 		/*basic rules*/
-
+		
 		on("Incompatible schema prop and matching object property types") {
 			it("Should throw Exception") {
 				shouldThrow(Exception::class.java) {
 					class Obj {
 						var p0: Int = 0
 					}
-
+					
 					class ObjSchema : SCHEMAof<Obj>(Obj::class) {
 						val p0 = PROP_of(LONG)
 					}
@@ -66,7 +66,7 @@ class TestBasics : Spek() { init {
 					class Obj {
 						var p0: MutableList<Int?> = mutableListOf()
 					}
-
+					
 					class ObjSchema : SCHEMAof<Obj>(Obj::class) {
 						val p0 = PROP_of(MLISTof(INT))
 					}
@@ -86,7 +86,7 @@ class TestBasics : Spek() { init {
 				val p0: Int = 10
 				var p1: String? = null
 			}
-
+			
 			class ObjSchema : SCHEMAof<Obj>(Obj::class) {
 				val p0 by PROP_of(INT, true)
 				val p1 by PROP_of(STRING)
@@ -104,13 +104,13 @@ class TestBasics : Spek() { init {
 				var p1: Int = 10
 				var p0: Int = 1
 			}
-
+			
 			class ObjSchema : SCHEMAof<Obj>(Obj::class) {
 				// swapping matters
 				val p0 by PROP_of(INT)
 				val p1 by PROP_of(INT)
 			}
-
+			
 			val schema = ObjSchema()
 			val obj = schema.instance()
 			it("Shoul have initial values") {
@@ -163,22 +163,22 @@ class TestBasics : Spek() { init {
 			schema.pStub.set(obj, 1)
 			it("Should produce Unit") { shouldEqual(Unit, schema.pStub.get(obj)) }
 		}
-
+		
 		/*constructors*/
-
+		
 		on("Object with valid primary constructor containing only prop properties") {
 			// order in constructor doesn't matter.
 			// default values are ignored
 			class Obj(var p1: Int, var p0: Int = 1) {
 				val p2 = 1
 			}
-
+			
 			class ObjSchema : SCHEMAof<Obj>(Obj::class) {
 				val p0 by PROP_of(INT)
 				val p1 by PROP_of(INT)
 				val p2 by PROP_of(INT)
 			}
-
+			
 			val schema = ObjSchema()
 			val obj = schema.instance()
 			it("Default value is ignored") { shouldEqual(0, schema.p0.get(obj)) }
@@ -187,24 +187,24 @@ class TestBasics : Spek() { init {
 			class Obj(var p1: Int, p0: Int) {
 				var p0: Int = 1
 			}
-
+			
 			class ObjSchema : SCHEMAof<Obj>(Obj::class) {
 				val p0 by PROP_of(INT)
 				val p1 by PROP_of(INT)
 			}
-
+			
 			val schema = ObjSchema()
 			val obj = schema.instance()
 			it("p0 contains initial but non default value") { shouldEqual(1, schema.p0.get(obj)) }
 		}
 		on("Inaccessible Constructor") {
 			class Obj private constructor(var p1: Int, var p0: Int)
-
+			
 			class ObjSchema : SCHEMAof<Obj>(Obj::class) {
 				val p0 by PROP_of(INT)
 				val p1 by PROP_of(INT)
 			}
-
+			
 			val schema = ObjSchema()
 			val obj = schema.instance()
 			it("Object should exist") { shouldNotBeNull(obj) }
@@ -212,12 +212,12 @@ class TestBasics : Spek() { init {
 		}
 		on("Data class Constructor") {
 			data class Obj(var p1: Int, val p0: Int)
-
+			
 			class ObjSchema : SCHEMAof<Obj>(Obj::class) {
 				val p0 by PROP_of(INT)
 				val p1 by PROP_of(INT)
 			}
-
+			
 			val schema = ObjSchema()
 			val obj = schema.instance()
 			schema.p1.set(obj, 1)
@@ -227,12 +227,12 @@ class TestBasics : Spek() { init {
 			it("Should fail") {
 				shouldThrow(Exception::class.java) {
 					class Obj(var p1: Int, var p0: Int, val nonProp: Int = 0)
-
+					
 					class ObjSchema : SCHEMAof<Obj>(Obj::class) {
 						val p0 by PROP_of(INT)
 						val p1 by PROP_of(INT)
 					}
-
+					
 					val schema = ObjSchema()
 					schema.init()
 				}
@@ -246,19 +246,19 @@ class TestBasics : Spek() { init {
 					p.extra = mutableMapOf<String, Any>()
 				}
 			}
-
+			
 			val schema = ObjSchema()
 			schema.p0.description = "Object identifier"
 			it("should be accessible") { shouldEqual("Object identifier", schema.p0.description) }
 		}
 		on("Usage of prop alias") {
 			class Obj(var p1: Int, var p0: Int)
-
+			
 			class ObjSchema : SCHEMAof<Obj>(Obj::class) {
 				val p0 by PROP_of(INT)
 				val p1 by PROP_of(INT).apply { alias = "alias1" }
 			}
-
+			
 			val schema = ObjSchema()
 			val obj = schema.instance()
 			val prod1 = schema.write(obj, DefaultFactory, false)
@@ -268,7 +268,7 @@ class TestBasics : Spek() { init {
 			schema.p1.alias = "alias2"
 			val objMod2 = schema.read("""{"p0":0,"alias2":11,"alias1":42}""", DefaultFactory)
 			val objMod3 = schema.read("""{"p0":0,"nonProp":22,"p1":33}""", DefaultFactory)
-
+			
 			it("map representation inserts alias but sequence doe not") {
 				shouldEqual("""{"p0":0,"p1":0,"alias1":0}""", prod1)
 				shouldEqual("""[0,0]""", prod2)
@@ -285,25 +285,25 @@ class TestBasics : Spek() { init {
 			class Obj(var p1: Int, nonProp: Int) {
 				var p0: Int = 0
 			}
-
+			
 			class ObjSchema : SCHEMAof<Obj>(Obj::class) {
 				val p0 by PROP_of(INT).apply { alias = "nonProp" }
 				val p1 by PROP_of(INT)
 			}
-
+			
 			val schema = ObjSchema()
 			val obj = schema.instance()
 //			println("Prod= $prod1")
 			val objMod1 = schema.read("""{"p1":0,"nonProp":42}""", DefaultFactory)
-
+			
 			it("setting alias in constructor will not affect prop") {
 				shouldEqual(objMod1!!.p0, 0)
 			}
 		}
-
-
+		
+		
 		// todo test skip updating Unit values
-
+		
 	}
 }
 }

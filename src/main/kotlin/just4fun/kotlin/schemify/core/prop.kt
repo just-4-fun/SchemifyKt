@@ -92,7 +92,7 @@ interface iPropType<T : Any> {
 		return name.length <= typeName.length + 1 && name.startsWith(typeName)
 	}
 
-	@hide fun readEntry(v: T, name: String?, entryBuilder: EntryBuilder, asSequence: Boolean?): Entry
+	@hide fun readEntry(v: T, name: String?, entryBuilder: EntryBuilder, compact: Boolean?): Entry
 	@hide fun objectWriter(): Writer<T>? = null
 	@hide fun sequenceWriter(): Writer<T>? = null
 }

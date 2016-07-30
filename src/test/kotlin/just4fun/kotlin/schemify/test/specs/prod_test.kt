@@ -20,8 +20,8 @@ import kotlin.reflect.KClass
 class TestProduction : Spek() { init {
 
 	fun <O : Any, T : Any> test(on: On, obj: O, schema: SCHEMAof<O>, readerFactory: ReaderFactory<T>, writerFactory: WriterFactory<T>, info: String) {
-		val prod1 = schema.write(obj, writerFactory, schema.writeAsSequence)
-		val prod2 = schema.write(obj, writerFactory, !schema.writeAsSequence)
+		val prod1 = schema.write(obj, writerFactory, schema.compact)
+		val prod2 = schema.write(obj, writerFactory, !schema.compact)
 		println("Prod1\n$prod1")
 		println("Prod2\n$prod2")
 		val obj1 = schema.read(prod1!!, readerFactory)

@@ -10,16 +10,16 @@ interface TypeProducer<T:Any> {
 }
 
 
-// todo make them anonymous classes
+// todo make them anonymous classes ?
 
-/* OBJECT PRODUCTION */
+/* SCHEME PRODUCTION */
 /* reader */
-class ObjectReader<T : Any>(override val input: T, val schema: SCHEMAof<T>, val asSequence: Boolean? = null) : Reader<T>() {
+class SchemeReader<T : Any>(override val input: T, val schema: SCHEMAof<T>, val compact: Boolean? = null) : Reader<T>() {
 	private var index = 0
 	private var hasAlias = false
 
 	override fun readRootEntry(entryBuilder: EntryBuilder): Entry =
-		if (asSequence ?: schema.writeAsSequence) entryBuilder.SequenceEntry()
+		if (compact ?: schema.compact) entryBuilder.SequenceEntry()
 		else entryBuilder.ObjectEntry()
 
 	override fun readNextEntry(entryBuilder: EntryBuilder, contextIsSequence: Boolean): Entry {
@@ -31,20 +31,20 @@ class ObjectReader<T : Any>(override val input: T, val schema: SCHEMAof<T>, val 
 				hasAlias = false
 				index++
 				if (v == null) entryBuilder.AtomicNullEntry(prop.alias!!)
-				else prop.readEntry(v, prop.alias!!, entryBuilder, asSequence)
+				else prop.readEntry(v, prop.alias!!, entryBuilder, compact)
 			}
 			else {
 				if (prop.alias == null || contextIsSequence) index++
 				else hasAlias = true
 				if (v == null) entryBuilder.AtomicNullEntry(prop.name)
-				else prop.readEntry(v, prop.name, entryBuilder, asSequence)
+				else prop.readEntry(v, prop.name, entryBuilder, compact)
 			}
 		}
 	}
 }
 
 /* writer */
-class ObjectWriter<T : Any>(val schema: SCHEMAof<T>) : Writer<T>() {
+class SchemeWriter<T : Any>(val schema: SCHEMAof<T>) : Writer<T>() {
 	val hasConstructor = schema.hasConstructor
 	lateinit var instance: T
 	lateinit var values: Array<Any?>

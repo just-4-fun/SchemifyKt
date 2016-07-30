@@ -316,7 +316,7 @@ class Point(var x: String, var y: Float) : SchemaObject<Point>() {
 	//	override val schema: SchemaType<Point> = Point
 
 	companion object : PropType.SCHEMAof<Point>(Point::class) {
-		init {writeAsSequence = false}
+		init {compact = false}
 		override fun instance(): Point = Point("", 0f)
 		val x by PROP_of(STRING)
 		val y by PROP_of(FLOAT)
