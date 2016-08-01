@@ -37,7 +37,7 @@
 <p>Structure of a class can be represented as a <strong>Scheme</strong> by mapping class properties (fields) to scheme <strong>Props</strong>.  </p>
 
 <blockquote>
-<p><img src="https://cloud.githubusercontent.com/assets/5307477/17268740/86bae482-563c-11e6-9178-977e9a07e615.png" alt="smf_fieldprop"></p>
+<p><img src="https://cloud.githubusercontent.com/assets/5307477/17297455/72287c36-580e-11e6-8efd-fc9f46e9a3c8.png" alt="smf_fieldprop"></p>
 </blockquote>
 
 <p>Since the scheme of the class is <a href="#defining-scheme"><strong>defined</strong></a> it can be used for:</p>
@@ -56,7 +56,7 @@
 
 <ul>
 <li>instance of that class can be assigned with values via props</li>
-<li>prop attributes such as name, index, custom extras, etc can be used in building structured queries, DSLs, etc. </li>
+<li>prop attributes such as name, index, custom extras, etc can be used in DSLs, building structured queries, etc. </li>
 </ul>
 </li>
 <li>
@@ -64,10 +64,11 @@
 </ul>
 
 <blockquote>
-<p><em>In this sense <strong>Scheme</strong> is a special type that represents a class structure as set of Props.<br>
-<strong>Schemified class</strong> is the class that has the scheme.<br>
-<strong>Prop</strong> is a special type that represents schemified class property (field).<br>
-<strong>Schemified object</strong> is an instance of the schemified class.</em>  </p>
+<p><em>Terms:<br>
+<strong>Scheme</strong> is a special type that represents a class structure as set of Props<br>
+<strong>Schemified class</strong> is the class that has the scheme<br>
+<strong>Prop</strong> is a special type that represents schemified class property (field)<br>
+<strong>Schemified object</strong> is an instance of the schemified class</em>  </p>
 </blockquote>
 
 <h3>
@@ -75,17 +76,17 @@
 
 <ul>
 <li>
-<p>Scheme of <code>class T</code> can be defined by extending class <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/types.kt#L808"><code>SCHEMAof&lt;T : Any&gt;</code></a>. And for each exposing field of <code>class T</code> the corresponding prop in the scheme should be created.</p>
+<p>Scheme of <code>class T</code> can be defined by extending class <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/types.kt#L808"><code>SCHEMAof&lt;T&gt;</code></a>. And for each exposing property of <code>class T</code> the corresponding <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/prop.kt#L9"><code>Prop</code></a> in the scheme should be created.</p>
 
 <blockquote>
-<p><img src="https://cloud.githubusercontent.com/assets/5307477/17268824/1d5ed856-563f-11e6-9d4f-adf36bb23e73.png" alt="smf_define_scheme"></p>
+<p><img src="https://cloud.githubusercontent.com/assets/5307477/17297564/e13852cc-580e-11e6-8571-d25ca25ad6f8.png" alt="smf_define_scheme"></p>
 </blockquote>
 </li>
 <li>
-<p>A prop name and type argument should match the field name and type (no matter nullable or not).</p>
+<p>A prop name and its generic type argument should match the field name and type (no matter nullable or not).</p>
 
 <blockquote>
-<p><img src="https://cloud.githubusercontent.com/assets/5307477/17268867/4672d174-5640-11e6-8180-731760e837e1.png" alt="smf_define_props"></p>
+<p><img src="https://cloud.githubusercontent.com/assets/5307477/17297604/1a58ec42-580f-11e6-9e06-bbe10ae1096d.png" alt="smf_define_props"></p>
 </blockquote>
 </li>
 <li>
