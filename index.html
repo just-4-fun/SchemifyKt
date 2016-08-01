@@ -1,34 +1,25 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta charset="UTF-8">
     <title>Schemify.Kt by just-4-fun</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-light.css">
-    <meta name="viewport" content="width=device-width">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Schemify.Kt</h1>
-        <p>Schemification and serialization API for Kotlin</p>
+    <section class="page-header">
+      <h1 class="project-name">Schemify.Kt</h1>
+      <h2 class="project-tagline">Schemification and serialization API for Kotlin</h2>
+      <a href="https://github.com/just-4-fun/SchemifyKt" class="btn">View on GitHub</a>
+      <a href="https://github.com/just-4-fun/SchemifyKt/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/just-4-fun/SchemifyKt/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-        <p class="view"><a href="https://github.com/just-4-fun/SchemifyKt">View the Project on GitHub <small>just-4-fun/SchemifyKt</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/just-4-fun/SchemifyKt/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/just-4-fun/SchemifyKt/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/just-4-fun/SchemifyKt">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
+    <section class="main-content">
+      <h1>
 <a id="apis" class="anchor" href="#apis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>APIs:</h1>
 
 <ul>
@@ -78,7 +69,7 @@
 
 <ul>
 <li>
-<p>Scheme of <code>class T</code> can be defined by extending class <a href=".#blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/types.kt#L808"><code>SCHEMAof&lt;T : Any&gt;</code></a>. And for each exposing field of <code>class T</code> the corresponding prop in the scheme should be created.</p>
+<p>Scheme of <code>class T</code> can be defined by extending class <a href=".blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/types.kt#L808"><code>SCHEMAof&lt;T : Any&gt;</code></a>. And for each exposing field of <code>class T</code> the corresponding prop in the scheme should be created.</p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17268824/1d5ed856-563f-11e6-9d4f-adf36bb23e73.png" alt="smf_define_scheme"></p>
@@ -321,13 +312,15 @@ Atomic value is a data of following base types: String, ByteArray and all the ja
 <span class="pl-k">def</span> <span class="pl-en">writeObjectEntry</span>(<span class="pl-v">name</span>: <span class="pl-k">String</span><span class="pl-k">?</span>, <span class="pl-v">index</span>: <span class="pl-k">Int</span>, <span class="pl-v">content</span>: <span class="pl-en">EnclosingEntries</span>)<span class="pl-k">:</span> <span class="pl-k">Unit</span>
 <span class="pl-k">def</span> <span class="pl-en">writeSequenceEntry</span>(<span class="pl-v">name</span>: <span class="pl-k">String</span><span class="pl-k">?</span>, <span class="pl-v">index</span>: <span class="pl-k">Int</span>, <span class="pl-v">content</span>: <span class="pl-en">EnclosingEntries</span>)<span class="pl-k">:</span> <span class="pl-k">Unit</span>
 <span class="pl-k">def</span> <span class="pl-en">writeAtomicEntry</span>(<span class="pl-v">value</span>: [all atomic types], <span class="pl-v">name</span>: <span class="pl-k">String</span><span class="pl-k">?</span>, <span class="pl-v">index</span>: <span class="pl-k">Int</span>)<span class="pl-k">:</span> <span class="pl-k">Unit</span></pre></div>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/just-4-fun">just-4-fun</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/just-4-fun/SchemifyKt">Schemify.Kt</a> is maintained by <a href="https://github.com/just-4-fun">just-4-fun</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
+
+    </section>
+
+  
   </body>
 </html>
