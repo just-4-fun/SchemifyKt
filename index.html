@@ -34,35 +34,41 @@
 <h2>
 <a id="schemification-api" class="anchor" href="#schemification-api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Schemification API</h2>
 
-<p>Structure of a class can be represented as a <strong>Scheme</strong> by mapping class fields to scheme <strong>Props</strong>.<br>
-<em>In this sense scheme is a special class that represents other class structure as set of Props.</em>  </p>
+<p>Structure of a class can be represented as a <strong>Scheme</strong> by mapping class properties (fields) to scheme <strong>Props</strong>.  </p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17268740/86bae482-563c-11e6-9178-977e9a07e615.png" alt="smf_fieldprop"></p>
 </blockquote>
 
-<p>Since the scheme of the class is <a href="#defining-scheme">defined</a> it can be used for:</p>
+<p>Since the scheme of the class is <a href="#defining-scheme"><strong>defined</strong></a> it can be used for:</p>
 
 <ul>
 <li>
 <a href="#scheme-serialization"><strong>serialization</strong></a>:
 
 <ul>
-<li>instance of that class can be read from other formats</li>
-<li>instance of that class can be written to other formats.</li>
+<li>instance of that class can be read from other format (e.g. json string)</li>
+<li>instance of that class can be written to other format (e.g. xml string)</li>
 </ul>
 </li>
 <li>
 <a href="#prop-manipulation"><strong>props manipulation</strong></a>: 
 
 <ul>
-<li>instance of that class can be assigned with values via props. </li>
-<li>prop attributes such as name, order index, user defined extras, etc can be used in building requests, DSLs, etc. </li>
+<li>instance of that class can be assigned with values via props</li>
+<li>prop attributes such as name, index, custom extras, etc can be used in building structured queries, DSLs, etc. </li>
 </ul>
 </li>
 <li>
-<a href="#extended-methods"><strong>extended methods</strong></a> on instance of that class such as equal, copy, toString, hashCode</li>
+<a href="#extended-methods"><strong>extended methods</strong></a> calls on instance of that class such as equal, copy, toString, hashCode</li>
 </ul>
+
+<blockquote>
+<p><em>In this sense <strong>Scheme</strong> is a special type that represents a class structure as set of Props.<br>
+<strong>Schemified class</strong> is the class that has the scheme.<br>
+<strong>Prop</strong> is a special type that represents schemified class property (field).<br>
+<strong>Schemified object</strong> is an instance of the schemified class.</em>  </p>
+</blockquote>
 
 <h3>
 <a id="defining-scheme" class="anchor" href="#defining-scheme" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Defining Scheme</h3>
