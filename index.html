@@ -105,57 +105,59 @@ The following prop types are supported:  </p>
 <tbody>
 <tr>
 <td><code>Unit</code></td>
-<td>PROP_STUB()</td>
+<td><code>PROP_STUB()</code></td>
 <td>for <em>stub</em> props</td>
 </tr>
 <tr>
 <td>Primitive types</td>
-<td>PROP_Long() ...</td>
+<td>
+<code>PROP_Long()</code> ...</td>
 <td>All primitive types: <code>Long</code>, <code>Int</code>, etc.</td>
 </tr>
 <tr>
 <td><code>String</code></td>
-<td>PROP_String()</td>
+<td><code>PROP_String()</code></td>
 <td>String type</td>
 </tr>
 <tr>
 <td>Primitive arrays</td>
-<td>PROP_Longs() ...</td>
+<td>
+<code>PROP_Longs()</code> ...</td>
 <td>All primitive arrays: <code>LongArray</code>, <code>IntArray</code>, etc.</td>
 </tr>
 <tr>
 <td><code>MutableMap&lt;String, Any?&gt;</code></td>
-<td>PROP_Map()</td>
+<td><code>PROP_Map()</code></td>
 <td>Raw map type</td>
 </tr>
 <tr>
 <td><code>Array&lt;Any?&gt;</code></td>
-<td>PROP_Array()</td>
+<td><code>PROP_Array()</code></td>
 <td>Raw array type</td>
 </tr>
 <tr>
 <td><code>Collection&lt;Any?&gt;</code></td>
-<td>PROP_Collection()</td>
+<td><code>PROP_Collection()</code></td>
 <td>Raw collection type</td>
 </tr>
 <tr>
 <td>Any</td>
-<td>PROP_of(type)</td>
+<td><code>PROP_of(type)</code></td>
 <td>Scheme type //TODO</td>
 </tr>
 <tr>
 <td>Any</td>
-<td>PROP_AutoSchemaOf(type)</td>
+<td><code>PROP_AutoSchemaOf(type)</code></td>
 <td>AutoSchema type //TODO</td>
 </tr>
 <tr>
 <td>Any</td>
-<td>PROP_of(type)</td>
+<td><code>PROP_of(type)</code></td>
 <td>Value type //TODO</td>
 </tr>
 <tr>
 <td>Any</td>
-<td>PROP_???()</td>
+<td><code>PROP_???()</code></td>
 <td>Sequence type //TODO</td>
 </tr>
 </tbody>
@@ -163,22 +165,22 @@ The following prop types are supported:  </p>
 </blockquote>
 </li>
 <li>
-<p>Prop has index indicating its declaration position within schema.<br>
-Position of prop in scheme should NOT match the position of corresponding field in schemified class.</p>
-
-<blockquote>
-<p><img src="https://cloud.githubusercontent.com/assets/5307477/17269101/59a43028-5648-11e6-9314-92554abd7ccd.png" alt="smf_prop_indexes"></p>
-</blockquote>
-</li>
-<li>
-<p>Prop should be assigned via delegation and not by ‘=’ sign. That’s because prop should be initialized lazily.</p>
+<p>Prop should be assigned via delegation and not by ‘=’ sign because prop has lazily initialization.</p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17269119/e8208572-5648-11e6-9683-48053a1946a3.png" alt="smf_prop_assign_by"></p>
 </blockquote>
 </li>
 <li>
-<p>By default variable field <strong><code>var</code></strong> can be modified and final field <strong><code>val</code></strong> can not be modified via corresponding prop. But default behavior can be altered by setting method argument <code>writeProtected</code>.</p>
+<p>Prop has index indicating its declaration position within the schema.<br>
+Position of prop in the scheme may NOT match the position of corresponding field in schemified class.</p>
+
+<blockquote>
+<p><img src="https://cloud.githubusercontent.com/assets/5307477/17269101/59a43028-5648-11e6-9314-92554abd7ccd.png" alt="smf_prop_indexes"></p>
+</blockquote>
+</li>
+<li>
+<p>By default variable field <strong><code>var</code></strong> can be modified and final field <strong><code>val</code></strong> can not be modified via corresponding prop. But default behavior can be altered by setting constructing method argument <code>writeProtected</code>.</p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17269164/7444781e-564a-11e6-9170-2164faabb951.png" alt="smf_write_protect"></p>
@@ -192,17 +194,16 @@ Position of prop in scheme should NOT match the position of corresponding field 
 </blockquote>
 </li>
 <li>
-<p>By default prop is configured to use Kotlin reflection instead of Java’s one to access related field. It’s slower (about 2 times) but it’s required in order to invoke field’s custom accessors. But if field doesn’t have custom getter or setter than it may be reasonable to configure prop to use Java reflection by setting method argument <code>hasNoAccessors</code> to true.</p>
+<p>By default prop is configured to use Kotlin reflection instead of Java’s one to access related field. It’s slower (about 2 times) but it’s required in order to invoke custom field accessors. But if field doesn’t have custom getter or setter than it may be reasonable to configure prop to use Java reflection by setting method argument <code>hasNoAccessors</code> to true.</p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17269236/cedcd720-564b-11e6-83cc-76be5bc857fd.png" alt="smf_prop_accessors"></p>
 </blockquote>
 </li>
 <li>
-<p>If schemified class has main non-empty constructor it should only have class fields (<code>val</code> or <code>var</code>) as arguments and only those fields that have corresponding props in scheme.<br>
+<p>If schemified class has main non-empty constructor it should only have class fields (<code>val</code> or <code>var</code>) as arguments and only those fields that have corresponding props in the scheme. But API can not detect whether constructor argument is declared with <code>val</code>/<code>var</code> or without.<br>
 Order of fields in constructor doesn’t matter.<br>
-Constructor with access modifier is still accessible by scheme.<br>
-API also can not distinguish whether the constructor argument is class field or just local initialization value. So be careful to declare constructor argument with val/var.</p>
+Constructor with access modifier is still accessible by the scheme.  </p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17269308/7da7c340-564d-11e6-8a19-61addebfc88e.png" alt="smf_constructor"></p>
@@ -307,12 +308,12 @@ Container representation should conform the structure:</p>
 <p>Specific symbols for concrete records, their delimiters and way of encoding named-entry are up to Reader and Writer implementation.<br>
 Atomic value is a data of following base types: String, ByteArray and all the java primitive types.</p>
 
-<p>To implement custom Reader class Reader should be extended. And the following methods should be implemented:</p>
+<p>To implement custom Reader <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/production.kt#L148"><code>class Reader&lt;T&gt;</code></a> should be extended. And the following methods should be implemented:</p>
 
 <div class="highlight highlight-source-scala"><pre><span class="pl-k">def</span> <span class="pl-en">readRootEntry</span>(<span class="pl-v">entryBuilder</span>: <span class="pl-en">EntryBuilder</span>)<span class="pl-k">:</span> <span class="pl-en">Entry</span>
 <span class="pl-k">def</span> <span class="pl-en">readNextEntry</span>(<span class="pl-v">entryBuilder</span>: <span class="pl-en">EntryBuilder</span>, <span class="pl-v">contextIsSequence</span>: <span class="pl-k">Boolean</span>)<span class="pl-k">:</span> <span class="pl-en">Entry</span></pre></div>
 
-<p>To implement custom Writer class Writer should be extended. And the following methods should be implemented:</p>
+<p>To implement custom Writer <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/production.kt#L162"><code>class Writer&lt;T&gt;</code></a> should be extended. And the following methods should be implemented:</p>
 
 <div class="highlight highlight-source-scala"><pre><span class="pl-k">def</span> <span class="pl-en">result</span>()<span class="pl-k">:</span> <span class="pl-en">T</span><span class="pl-k">?</span>
 <span class="pl-k">def</span> <span class="pl-en">writeRootEntry</span>(<span class="pl-v">isSequence</span>: <span class="pl-k">Boolean</span>, <span class="pl-v">content</span>: <span class="pl-en">EnclosingEntries</span>)<span class="pl-k">:</span> <span class="pl-k">Unit</span>
