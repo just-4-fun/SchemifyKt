@@ -76,14 +76,14 @@
 
 <ul>
 <li>
-<p>Scheme of <code>class T</code> can be defined by extending class <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/types.kt#L808"><code>SCHEMAof&lt;T&gt;</code></a>. And for each exposing property of <code>class T</code> the corresponding <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/prop.kt#L9"><code>Prop</code></a> in the scheme should be created.</p>
+<p>Scheme of class <code>T</code> can be defined by extending class <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/types.kt#L808"><code>SCHEMAof&lt;T&gt;</code></a>. And for each exposing field of class <code>T</code> the corresponding <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/prop.kt#L9"><code>Prop</code></a> in the scheme should be created.</p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17297564/e13852cc-580e-11e6-8571-d25ca25ad6f8.png" alt="smf_define_scheme"></p>
 </blockquote>
 </li>
 <li>
-<p>A prop name and its generic type argument should match the field name and type (no matter nullable or not).</p>
+<p>A prop name and its generic type argument should match the field name and type. Both nullable and non-nullable field type correspond to non-nullable prop type argument.</p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17297604/1a58ec42-580f-11e6-9e06-bbe10ae1096d.png" alt="smf_define_props"></p>
