@@ -56,7 +56,8 @@
 
 <ul>
 <li>instance of that class can be assigned with values via props</li>
-<li>prop attributes such as name, index, custom extras, etc can be used in DSLs, building structured queries, etc. </li>
+<li>props can be used for class structure utilization</li>
+<li>prop attributes such as name, index, custom extras can be used in DSLs, building structured queries, etc. </li>
 </ul>
 </li>
 <li>
@@ -76,21 +77,22 @@
 
 <ul>
 <li>
-<p>Scheme of class <code>T</code> can be defined by extending class <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/types.kt#L808"><code>SCHEMAof&lt;T&gt;</code></a>. And for each exposing field of class <code>T</code> the corresponding <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/prop.kt#L9"><code>Prop</code></a> in the scheme should be created.</p>
+<p>Scheme of class <code>T</code> can be defined by extending class <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/types.kt#L808"><code>SCHEMAof&lt;T&gt;</code></a>. And for each exposing field of class <code>T</code> the corresponding prop (<code>val</code> of type <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/prop.kt#L9"><code>Prop&lt;P&gt;</code></a>) in the scheme should be created.</p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17297564/e13852cc-580e-11e6-8571-d25ca25ad6f8.png" alt="smf_define_scheme"></p>
 </blockquote>
 </li>
 <li>
-<p>A prop name and its generic type argument should match the field name and type. Both nullable and non-nullable field type correspond to non-nullable prop type argument.</p>
+<p>A prop name and its generic type argument <code>P</code> should match the field name and type.<br>
+Both nullable and non-nullable field types correspond to non-nullable prop type argument.</p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17297604/1a58ec42-580f-11e6-9e06-bbe10ae1096d.png" alt="smf_define_props"></p>
 </blockquote>
 </li>
 <li>
-<p>Props can be constructed via methods in scheme class that start from  '<strong>PROP_...</strong>'.<br>
+<p>Props can be constructed via the methods in the scheme class that start from  '<strong>PROP_...</strong>'.<br>
 The following prop types are supported:  </p>
 
 <blockquote>
@@ -109,26 +111,21 @@ The following prop types are supported:  </p>
 <td>for <em>stub</em> props</td>
 </tr>
 <tr>
-<td>Primitive types</td>
-<td>
-<code>PROP_Long()</code> ...</td>
-<td>All primitive types: <code>Long</code>, <code>Int</code>, etc.</td>
-</tr>
-<tr>
 <td><code>String</code></td>
 <td><code>PROP_String()</code></td>
 <td>String type</td>
 </tr>
 <tr>
-<td>Primitive arrays</td>
+<td>Primitive types</td>
 <td>
-<code>PROP_Longs()</code> ...</td>
-<td>All primitive arrays: <code>LongArray</code>, <code>IntArray</code>, etc.</td>
+<code>PROP_Long()</code>, ...</td>
+<td>All primitive types: <code>Long</code>, <code>Byte</code>, etc.</td>
 </tr>
 <tr>
-<td><code>MutableMap&lt;String, Any?&gt;</code></td>
-<td><code>PROP_Map()</code></td>
-<td>Raw map type</td>
+<td>Primitive arrays</td>
+<td>
+<code>PROP_Longs()</code>, ...</td>
+<td>All primitive arrays: <code>LongArray</code>, <code>ByteArray</code>, etc.</td>
 </tr>
 <tr>
 <td><code>Array&lt;Any?&gt;</code></td>
@@ -141,24 +138,68 @@ The following prop types are supported:  </p>
 <td>Raw collection type</td>
 </tr>
 <tr>
-<td>Any</td>
-<td><code>PROP_of(type)</code></td>
-<td>Scheme type //TODO</td>
+<td><code>MutableMap&lt;String, Any?&gt;</code></td>
+<td><code>PROP_Map()</code></td>
+<td>Raw map type</td>
 </tr>
 <tr>
-<td>Any</td>
-<td><code>PROP_AutoSchemaOf(type)</code></td>
-<td>AutoSchema type //TODO</td>
+<td>Schemified class</td>
+<td><code>PROP_of(scheme)</code></td>
+<td>Any class that has scheme</td>
 </tr>
 <tr>
-<td>Any</td>
-<td><code>PROP_of(type)</code></td>
-<td>Value type //TODO</td>
+<td><code>T: Any</code></td>
+<td><code>PROP_AutoSchemaOf&lt;T&gt;</code></td>
+<td>Any class <code>T</code>. Auto-generates scheme for <code>T</code>
+</td>
 </tr>
 <tr>
-<td>Any</td>
-<td><code>PROP_???()</code></td>
-<td>Sequence type //TODO</td>
+<td>
+<code>Long</code> wrapper</td>
+<td><code>PROP_of(value_type)</code></td>
+<td>Any class <code>T</code> that has a <code>LONGof&lt;T&gt;</code> defined</td>
+</tr>
+<tr>
+<td>
+<code>String</code> wrapper</td>
+<td><code>PROP_of(value_type)</code></td>
+<td>Any class <code>T</code> that has a <code>STRINGof&lt;T&gt;</code> defined</td>
+</tr>
+<tr>
+<td>
+<code>ByteArray</code> wrapper</td>
+<td><code>PROP_of(value_type)</code></td>
+<td>Any class <code>T</code> that has a <code>BYTESof&lt;T&gt;</code> defined</td>
+</tr>
+<tr>
+<td><code>Array&lt;E&gt;</code></td>
+<td><code>PROP_ArrayOf(type_of_E)</code></td>
+<td>Array of type <code>E</code> that has <code>PropType&lt;E&gt;</code> defined</td>
+</tr>
+<tr>
+<td><code>List&lt;E&gt;</code></td>
+<td><code>PROP_ListOf(type_of_E)</code></td>
+<td>List of type <code>E</code> that has <code>PropType&lt;E&gt;</code> defined</td>
+</tr>
+<tr>
+<td><code>MutableList&lt;E&gt;</code></td>
+<td><code>PROP_MutableListOf(type_of_E)</code></td>
+<td>Mutable list of type <code>E</code> that has <code>PropType&lt;E&gt;</code> defined</td>
+</tr>
+<tr>
+<td><code>Set&lt;E&gt;</code></td>
+<td><code>PROP_SetOf(type_of_E)</code></td>
+<td>Set of type <code>E</code> that has <code>PropType&lt;E&gt;</code> defined</td>
+</tr>
+<tr>
+<td><code>MutableSet&lt;E&gt;</code></td>
+<td><code>PROP_MutableSetOf(type_of_E)</code></td>
+<td>Mutable set of type <code>E</code> that has <code>PropType&lt;E&gt;</code> defined</td>
+</tr>
+<tr>
+<td><code>T: Any</code></td>
+<td><code>PROP_of(type_of_T)</code></td>
+<td>Any class that has <code>PropType&lt;T&gt;</code> defined</td>
 </tr>
 </tbody>
 </table>
