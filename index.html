@@ -92,14 +92,15 @@ Both nullable and non-nullable field types correspond to non-nullable prop type 
 </blockquote>
 </li>
 <li>
-<p>Props can be constructed via the methods in the scheme class that start from  '<strong>PROP_...</strong>'.<br>
-The following prop types are supported:  </p>
+<p>Props can be constructed via the methods in the scheme class that start from  <code>PROP_...</code>.<br>
+Scheme supports field types for which a corresponding <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/types.kt#L15"><code>PropType&lt;P&gt;</code></a> is defined.<br>
+The following field types are supported initially:  </p>
 
 <blockquote>
 <table>
 <thead>
 <tr>
-<th>Type</th>
+<th>Field type</th>
 <th>Constructor</th>
 <th>Description</th>
 </tr>
@@ -174,37 +175,47 @@ The following prop types are supported:  </p>
 <tr>
 <td><code>Array&lt;E&gt;</code></td>
 <td><code>PROP_ArrayOf(type_of_E)</code></td>
-<td>Array of type <code>E</code> that has <code>PropType&lt;E&gt;</code> defined</td>
+<td>Array of type <code>E</code> that has a <code>PropType&lt;E&gt;</code> defined</td>
 </tr>
 <tr>
 <td><code>List&lt;E&gt;</code></td>
 <td><code>PROP_ListOf(type_of_E)</code></td>
-<td>List of type <code>E</code> that has <code>PropType&lt;E&gt;</code> defined</td>
+<td>List of type <code>E</code> that has a <code>PropType&lt;E&gt;</code> defined</td>
 </tr>
 <tr>
 <td><code>MutableList&lt;E&gt;</code></td>
 <td><code>PROP_MutableListOf(type_of_E)</code></td>
-<td>Mutable list of type <code>E</code> that has <code>PropType&lt;E&gt;</code> defined</td>
+<td>Mutable list of type <code>E</code> that has a <code>PropType&lt;E&gt;</code> defined</td>
 </tr>
 <tr>
 <td><code>Set&lt;E&gt;</code></td>
 <td><code>PROP_SetOf(type_of_E)</code></td>
-<td>Set of type <code>E</code> that has <code>PropType&lt;E&gt;</code> defined</td>
+<td>Set of type <code>E</code> that has a <code>PropType&lt;E&gt;</code> defined</td>
 </tr>
 <tr>
 <td><code>MutableSet&lt;E&gt;</code></td>
 <td><code>PROP_MutableSetOf(type_of_E)</code></td>
-<td>Mutable set of type <code>E</code> that has <code>PropType&lt;E&gt;</code> defined</td>
+<td>Mutable set of type <code>E</code> that has a <code>PropType&lt;E&gt;</code> defined</td>
 </tr>
 <tr>
 <td><code>T: Any</code></td>
 <td><code>PROP_of(type_of_T)</code></td>
-<td>Any class that has <code>PropType&lt;T&gt;</code> defined</td>
+<td>Any class that has a <code>PropType&lt;T&gt;</code> defined</td>
+</tr>
+<tr>
+<td><code>T: Collection&lt;E&gt;</code></td>
+<td><code>PROP_of(coll_type)</code></td>
+<td>Any collection <code>T</code> that has a <code>COLLECTIONof&lt;T, E&gt;</code> defined</td>
 </tr>
 </tbody>
 </table>
 </blockquote>
 </li>
+</ul>
+
+<p>The following <code>PropType</code>s can be extended to support custom field types: <code>SCHEMAof&lt;T&gt;</code>, <code>LONGof&lt;T&gt;</code>, <code>STRINGof&lt;T&gt;</code>, <code>BYTESof&lt;T&gt;</code>, <code>COLLECTIONof&lt;T, E&gt;</code>.</p>
+
+<ul>
 <li>
 <p>Prop should be assigned via delegation and not by ‘=’ sign because prop has lazily initialization.</p>
 
