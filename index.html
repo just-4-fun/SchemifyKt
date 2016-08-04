@@ -69,7 +69,7 @@
 <strong>Scheme</strong> is a special type that represents a class structure as set of Props<br>
 <strong>Schemified class</strong> is the class that has the scheme<br>
 <strong>Prop</strong> is a special type that represents schemified class property (field)<br>
-<strong>Schemified object</strong> is an instance of the schemified class</em>  </p>
+<strong>Schemified instance</strong> is an instance of the schemified class</em>  </p>
 </blockquote>
 
 <h3>
@@ -92,8 +92,8 @@ Both nullable and non-nullable field types correspond to non-nullable prop type 
 </blockquote>
 </li>
 <li>
-<p>Props can be constructed via the methods in the scheme class that start from  <code>PROP_...</code>.<br>
-Scheme supports field types for which a corresponding <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/types.kt#L15"><code>PropType&lt;P&gt;</code></a> is defined.<br>
+<p>Props can be constructed via the methods in the <code>Scheme</code> class that start from  <code>PROP_...</code>.<br>
+Props support those field types for which a corresponding <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/types.kt#L15"><code>PropType&lt;P&gt;</code></a> is defined.<br>
 The following field types are supported initially:  </p>
 
 <blockquote>
@@ -214,7 +214,7 @@ The following field types are supported initially:  </p>
 </blockquote>
 </li>
 <li>
-<p>Prop should be assigned via delegation and not with <code>=</code> sign because prop has lazily initialization.</p>
+<p>Prop should be assigned via delegation and not with <code>=</code> sign because prop has lazy initialization.</p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17269119/e8208572-5648-11e6-9683-48053a1946a3.png" alt="smf_prop_assign_by"></p>
@@ -243,7 +243,7 @@ Position of prop in the scheme may NOT match the position of corresponding field
 </blockquote>
 </li>
 <li>
-<p>By default prop is configured to use Kotlin reflection instead of Java’s one to access related field. It’s slower (about 2 times) but it’s required in order to invoke custom field accessors. But if field doesn’t have custom getter or setter than it may be reasonable to configure prop to use Java reflection by setting method argument <code>hasNoAccessors</code> to true.</p>
+<p>By default prop is configured to use Kotlin reflection instead of Java one to access related field. It’s slower (about 2 times) but it’s required in order to invoke custom field accessors. But if field doesn’t have custom getter or setter than it may be reasonable to configure prop to use Java reflection by setting method argument <code>hasNoAccessors</code> to true.</p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17269236/cedcd720-564b-11e6-83cc-76be5bc857fd.png" alt="smf_prop_accessors"></p>
@@ -271,7 +271,7 @@ Scheme <code>write</code> method can be called to produce formatted object from 
 
 <ul>
 <li>general form (as sequence of named entries)</li>
-<li>compact form (as sequence of non-named entries or which is simply an array of values).<br>
+<li>compact form (as sequence of non-named entries i.e. an array of values).<br>
 </li>
 </ul>
 
@@ -284,15 +284,23 @@ Scheme <code>write</code> method can be called to produce formatted object from 
 <span class="pl-k">val</span> <span class="pl-en">sabreCopy</span> <span class="pl-k">=</span> <span class="pl-en">XSchema</span>.read(generalJson, <span class="pl-en">JsonFactory</span>)</pre></div>
 </blockquote>
 
-<p>Benefit of compact form is its compact representation.   </p>
+<h3>
+<a id="compact-form" class="anchor" href="#compact-form" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compact form</h3>
+
+<p>Benefit of the compact form is its concise representation.   </p>
 
 <blockquote>
-<p><em>Representation example based on Json implementation:</em><br>
+<p><em>Example based on Json implementation:</em><br>
 <img src="https://cloud.githubusercontent.com/assets/5307477/17270002/7669aa86-5660-11e6-928b-2e669bb95452.png" alt="smf_compact_vs_general"></p>
 </blockquote>
 
 <p>One more advantage of compact form is zero scheme evolution.<br>
-I.e. none of changes to the schemified class (field addition / change / removal) affects transformation of schemified class instance from older schema version to new one and vice versa if props indexes stays intact.<br>
+That is no scheme migration efforts required to read a schemified instance from an object formatted by an older version of the scheme and vice versa.  </p>
+
+<p>Since the Compact form relies on props indexes instead of names it imposes the following restriction on scheme definition and evolution: props indexes stays intact. I.e. as long as prop index corresponds to its declaration position within the scheme, props neither should be removed nor their declaration positions should be changed.<br>
+The </p>
+
+<p>I.e. none of the changes to the schemified class (field addition / change / removal) affects a transformation of schemified instance produced by an older schema into a newer one and vice versa if props indexes stays intact.<br>
 As long as prop index corresponds to its declaration position within the schema, props neither should be removed nor their declaration positions should be changed. </p>
 
 <ul>
