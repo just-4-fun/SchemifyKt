@@ -271,9 +271,15 @@ Scheme <code>write</code> method can be called to produce formatted object from 
 
 <ul>
 <li>general form (as sequence of named entries)</li>
-<li>compact form (as sequence of non-named entries i.e. an array of values).<br>
+<li>
+<strong>compact form</strong> (as sequence of non-named entries i.e. an array of values).<br>
 </li>
 </ul>
+
+<blockquote>
+<p><em>Example based on Json implementation:</em><br>
+<img src="https://cloud.githubusercontent.com/assets/5307477/17270002/7669aa86-5660-11e6-928b-2e669bb95452.png" alt="smf_compact_vs_general">  </p>
+</blockquote>
 
 <p>Default representation is controlled by scheme <code>compact</code> property. Optional <code>compact</code> argument of write method can overwrite that property.  </p>
 
@@ -287,26 +293,16 @@ Scheme <code>write</code> method can be called to produce formatted object from 
 <h3>
 <a id="compact-form" class="anchor" href="#compact-form" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compact form</h3>
 
-<p>Benefit of the compact form is its concise representation.   </p>
+<p>Benefit of the compact form in its concise representation.<br>
+One more advantage of compact form is zero scheme evolution. That is no scheme migration efforts required to read a schemified instance from an object formatted by an older version of the scheme and vice versa.  </p>
 
-<blockquote>
-<p><em>Example based on Json implementation:</em><br>
-<img src="https://cloud.githubusercontent.com/assets/5307477/17270002/7669aa86-5660-11e6-928b-2e669bb95452.png" alt="smf_compact_vs_general"></p>
-</blockquote>
-
-<p>One more advantage of compact form is zero scheme evolution.<br>
-That is no scheme migration efforts required to read a schemified instance from an object formatted by an older version of the scheme and vice versa.  </p>
-
-<p>Since the Compact form relies on props indexes instead of names it imposes the following restriction on scheme definition and evolution: props indexes stays intact. I.e. as long as prop index corresponds to its declaration position within the scheme, props neither should be removed nor their declaration positions should be changed.<br>
-The </p>
-
-<p>I.e. none of the changes to the schemified class (field addition / change / removal) affects a transformation of schemified instance produced by an older schema into a newer one and vice versa if props indexes stays intact.<br>
-As long as prop index corresponds to its declaration position within the schema, props neither should be removed nor their declaration positions should be changed. </p>
+<p>Since the compact form relies on props indexes (instead of names) they should stays intact. I.e. as long as prop index corresponds to its declaration position within the scheme, props neither should be removed nor their declaration positions should be changed.<br>
+Changes to class such as field addition / change / removal that usually (in general form) involve its scheme evolution management, in compact form are performed in the following:  </p>
 
 <ul>
 <li>
 <p>Changing field name or type:<br>
-In case of renaming a field its corresponding prop should also be renamed. In case of changing type of a field its corresponding prop’s type should also be changed accordingly. As the representation does not include prop names, changing field name has no effect to transformation. Since API provides basic types casting (// TODO specify which ones), changing field type is compensated by value auto casting in most cases.  </p>
+In case of renaming a field its corresponding prop should also be renamed. In case of changing type of a field its corresponding prop’s type should also be changed accordingly. Changing field name has no effect on transformation as the compact representation does not include props names. Changing field type in most cases is compensated by provided value auto casting.  </p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17270017/f693e44c-5660-11e6-8f47-c0eb769e2ba8.png" alt="smf_evo_change"></p>
@@ -314,7 +310,7 @@ In case of renaming a field its corresponding prop should also be renamed. In ca
 </li>
 <li>
 <p>Field addition:<br>
-In case of addition a new field the corresponding prop should be just declared after all other props. Adding a field just appends a value to the top a sequence of values. Reading an object written by scheme with older version by scheme with newer version will just assign a default value to the extra field. Reading an object written by newer version of schema with older version will ignore absent value.  </p>
+In case of addition a new field the corresponding prop should just be declared after all other props. Reading an older formatted object by the scheme with newer version will just assign a default value to the extra field. Reading a newer formatted object by the scheme with older version will ignore absent value.  </p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17270018/f8a1e6e4-5660-11e6-9068-f97b178efcd0.png" alt="smf_evo_add"></p>
@@ -322,7 +318,7 @@ In case of addition a new field the corresponding prop should be just declared a
 </li>
 <li>
 <p>Field removal:<br>
-In case of removing a field its corresponding prop should be left and just change its type to Prop which is returned by calling PROP_STUB() construction method. Removing a field creates a “hole” in the schema that is just a change of a type of corresponding prop to Prop.   </p>
+In case of removing a field its corresponding prop should be left and just change its type to Prop. To construct such stub prop the scheme PROP_STUB() method can be used. Reading an older formatted object by the scheme with newer version will ignore an extra value. Reading a newer formatted object by the scheme with older version will assign a default value to the extra field.      </p>
 
 <blockquote>
 <p><img src="https://cloud.githubusercontent.com/assets/5307477/17270020/fa73fd4a-5660-11e6-8dae-5b07f2e404f5.png" alt="smf_evo_remove"></p>
