@@ -88,9 +88,10 @@
 Both nullable and non-nullable field types correspond to non-nullable prop type argument.</p>
 
 <blockquote>
-<p><img src="https://cloud.githubusercontent.com/assets/5307477/17297604/1a58ec42-580f-11e6-9e06-bbe10ae1096d.png" alt="smf_define_props"></p>
+<p><img src="https://cloud.githubusercontent.com/assets/5307477/17297604/1a58ec42-580f-11e6-9e06-bbe10ae1096d.png" alt="smf_define_props">  </p>
 </blockquote>
 </li>
+<li><p>If a prop doesn’t have the related field in schemified class accessing it will just return null value.  </p></li>
 <li>
 <p>Props can be constructed via the methods in the <code>Scheme</code> class that start from  <code>PROP_...</code>.<br>
 Props support those field types for which a corresponding <a href="https://github.com/just-4-fun/SchemifyKt/blob/master/src/main/kotlin/just4fun/kotlin/schemify/core/types.kt#L15"><code>PropType&lt;P&gt;</code></a> is defined.<br>
@@ -293,7 +294,7 @@ Scheme <code>write</code> method can be called to produce formatted object from 
 <h3>
 <a id="compact-form" class="anchor" href="#compact-form" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compact form</h3>
 
-<p>Benefit of the compact form in its concise representation.<br>
+<p>Benefit of the compact form is in its concise representation.<br>
 One more advantage of compact form is zero scheme evolution. That is no scheme migration efforts required to read a schemified instance from an object formatted by an older version of the scheme and vice versa.  </p>
 
 <p>Since the compact form relies on props indexes (instead of names) they should stays intact. I.e. as long as prop index corresponds to its declaration position within the scheme, props neither should be removed nor their declaration positions should be changed.<br>
@@ -328,11 +329,6 @@ In case of removing a field its corresponding prop should be left and just chang
 
 <h3>
 <a id="prop-manipulation" class="anchor" href="#prop-manipulation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prop manipulation</h3>
-
-<ul>
-<li>If a prop doesn’t have the related field in schemified class accessing it will just return null value.<br>
-To explicitly declare a prop that doesn’t have the related field it should be created via PROP_STUB() method which returns prop of type Prop. It’s useful when using compact representation and zero evolution scheme (see next).</li>
-</ul>
 
 <hr>
 
