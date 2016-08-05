@@ -330,6 +330,32 @@ In case of removing a field its corresponding prop should be left and just chang
 <h3>
 <a id="prop-manipulation" class="anchor" href="#prop-manipulation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prop manipulation</h3>
 
+<ul>
+<li>Scheme allows to access to class structure. 
+
+<ul>
+<li>Props are available as a list via <code>props: List&lt;Prop&lt;Any&gt;&gt;</code>
+</li>
+<li>Prop can be queried by name via <code>propMap: Map&lt;String, Prop&lt;Any&gt;&gt;</code>
+</li>
+<li>Number of props is available via <code>propSize</code><br>
+</li>
+</ul>
+</li>
+<li>Props can be used in building structured queries:<br>
+&gt; </li>
+</ul>
+
+<pre><code>data class Point(val x: Int, val y: Int){
+    companion object : PropType.SCHEMAof&lt;Point&gt;(Point::class) {
+        val x by PROP_Int()
+        val y by PROP_Int()
+    }
+}
+
+val query = "SELECT " + Point.x.name + "," + Point.y.name + " FROM Point" // SELECT x,y FROM Point
+</code></pre>
+
 <hr>
 
 <h2>
